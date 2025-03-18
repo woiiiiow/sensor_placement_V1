@@ -1,1 +1,69 @@
+===========================================================================
+        Algorithm: Sensor Positioning
+           Author: CHEN Junwei, Stefano DISCETTI, Marco RAIOLA
+       Laboratory: EAP of UC3M
+  Project website: https://erc-nextflow.uc3m.es
+   Project github: https://github.com/erc-nextflow
+         Platform: MATLAB
+             Date: 18th March 2025
+          Version: 1.0.0
+     Repositories: https://github.com/woiiiiow/sensor_positioning_V1
+          Contact: junwei.chen@uc3m.es
+===========================================================================
 
+DESCRIPTION
+This is the code used in sensor positioning for data-driven flow visualization combining PIV and probes (using time-embedded probes in the downstream). Here is an example on 2D simulation of the pinball case (the wake of 3 circles).
+
+PLATFORM
+The codes are tested on:
+AMD ThreadRipper 3990X/256 GB DDR4
+Ubuntu 20.04.6 LTS/5.15.0-131-generic/MATLAB R2022a
+around 1 hour for 2D case
+
+SITE OF CODES
+https://github.com/woiiiiow/sensor_positioning_V1
+
+DATABASE
+
+RUNNING
+1. downloading data from zenodo, which is on Pinball_DNS
+2. downloading the codes here and move to Pinball_DNS/
+3. converting .h5 file to .mat file using h52mat.m
+4. run traversing.m on MATLAB
+
+FILES IN GITHUB
+traversing_volumn.m                             MATLAB script for sensor positioning
+checkresult.m                                   MATLAB script for checking result
+
+FILES IN ZENODO
+mat2h5.m                                        MATLAB script to convert the format from *.mat to *.h5
+h52mat.m                                        MATLAB script to convert the format from *.h5 to *.mat
+TrainData.mat                                   field data for training
+TestData.mat                                    field data for testing
+ProbeHistory_everyrow.mat                       probe data fro training and testing
+ProbeTraversing_R3_3pr.mat                      computation result
+
+STRUCTURE OF DATA FILES
+of TrainData.mat and TestData.mat:
+    Nimg:          vector;       frame number extracted from original database
+    X, Y:          76x76;        coordinates of sub-domains
+    u, v, p:       5776x5001;    velocity fields components in X/Y-direction and pressure fields (dim 1 for the data in one snapshot, dim 2 for snapshots)
+of ProbeHistory_everyrow.mat:
+    Nimg:          vector;       frame number extracted from original database
+    X, Y:          76x1;         coordinates of sensors
+    u, v, p:       76x100001;    sensor signal of velocity components in X/Y-direction and pressure (dim 1 for the data in one snapshot, dim 2 for snapshots)
+of ProbeTraversing_R3_3pr.mat:
+    AR:            3x2600;       array of probe position (dim 1 for number of probes, dim 2 for number of combinations)
+    Acorr:         76x76;        matrix of correlation value
+    CorrTh:        scalar;       threshold for correlation value
+    X, Y:          76x76;        coordinates
+    Aerr_*:        1x2600;       velocity reconstruction error (dim 2 for the number of combinations)
+    Derr_*:        scalar;       velocity reconstruction error for equidistant sensors
+    Perr_*:        scalar;       velocity reconstruction error for block-pivoted QR sensors
+    Row_list:      1x26;         saving sensor position for AR
+    RowEqi:        1x3;          saving sensor position for equidistant sensors
+    RowQR:         1x3;          saving sensor position for for block-pivoted QR sensors
+    FieldStd:      scalar;       standard value of the velocity field
+
+ACKNOWLEDGEMENT
+We warmly acknowledge M. Morzyński and B. Noack for providing access to the fluidic pinball DNS code, and wish the user of data on Zenodo cite Deng et al. (2018) in the article.
