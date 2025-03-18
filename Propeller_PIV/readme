@@ -1,1 +1,76 @@
+===========================================================================
+        Algorithm: Sensor Positioning
+           Author: CHEN Junwei, Stefano DISCETTI, Marco RAIOLA
+       Laboratory: EAP of UC3M
+  Project website: https://erc-nextflow.uc3m.es
+   Project github: https://github.com/erc-nextflow
+         Platform: MATLAB
+             Date: 18th March 2025
+          Version: 1.0.0
+     Repositories: https://github.com/woiiiiow/sensor_positioning_V1
+          Contact: junwei.chen@uc3m.es
+===========================================================================
 
+DESCRIPTION
+This is the code used in sensor positioning for data-driven flow visualization combining PIV and probes (using time-embedded probes in the downstream). Here is an example on tomographic PIV dataset for the wake of a passively rotating propeller model.
+
+PLATFORM
+The codes are tested on:
+AMD ThreadRipper 3990X/256 GB DDR4
+Ubuntu 20.04.6 LTS/5.15.0-131-generic/MATLAB R2022a
+around 1 hour for 2D case
+
+SITE OF CODES
+https://github.com/woiiiiow/sensor_positioning_V1
+
+DATABASE
+
+RUNNING
+1. downloading data from zenodo, which is on Propeller_PIV
+2. downloading the codes here and move to Propeller_PIV/
+3. converting .h5 file to .mat file using h52mat.m
+4. run traversing_volumn.m on MATLAB for 3D case and traversing_volumn_p2D.m for pseudo 2D case.
+
+FILES IN GITHUB
+traversing_volumn.m                             MATLAB script for sensor positioning (3D case)
+traversing_volumn_p2D.m                         MATLAB script for sensor positioning (pseudo 2D case)
+checkresult.m                                   MATLAB script for checking result
+
+FILES IN ZENODO
+mat2h5.m                                        MATLAB script to convert the format from *.mat to *.h5
+h52mat.m                                        MATLAB script to convert the format from *.h5 to *.mat
+database/                                       folder saving data
+model/                                          folder saving the propeller's model
+sensor_positioning/                             folder saving the code
+in database/ there are:
+    PIV21/, PIV22/, PIV23/, PIV24/              folder saving the PIV data
+    in PIV21/, PIV22/, PIV23/, PIV24/ there is:
+        flow.mat                                saving PIV data
+in model/ there are:
+    tidal_turbine6.FCStd                        CAD file for FreeCAD
+    tidal_turbine6.FCStd1                       CAD file for FreeCAD
+    tidal_turbine6.step                         other CAD file
+    tidal_turbine6.stl                          other CAD file
+in sensor_positioning/ there are:
+    ProbeTraversing*.mat                        saving result
+
+STRUCTURE OF DATA FILES
+of flow.mat:
+    AFrame:        vector;       array of frame number
+    Mm_per_px_ratio:
+                   scalar;       the ratio of 1 mm in real world over 1 voxel of PIV field
+    Sample_rate:   scalar;       sample rate of PIV
+    Vector_Spacing:scalar;       vector spacing of PIV
+    U, V, W:       106929x*;     components of the velocity field (dim 1 for the data in one snapshot, dim 2 for frames)
+    X, Y, Z:       109x109x9;    coordinates
+of ProbeTraversing*.mat:
+    AR:            3x3654;       array of probe position (dim 1 for number of probes, dim 2 for number of combinations)
+    Acorr:         85x50;        matrix of correlation value
+    CorrTh:        scalar;       threshold for correlation value
+    Aerr_*:        1x3654;       velocity reconstruction error (dim 2 for the number of combinations)
+    Derr_*:        scalar;       velocity reconstruction error for equidistant sensors
+    Perr_*:        scalar;       velocity reconstruction error for block-pivoted QR sensors
+    Row_list:      1x29;         saving sensor position for AR
+    RowEqi:        1x3;          saving sensor position for equidistant sensors
+    RowQR:         1x3;          saving sensor position for for block-pivoted QR sensors
+    FieldStd:      scalar;       standard value of the velocity field
