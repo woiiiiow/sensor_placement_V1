@@ -18,9 +18,9 @@ corresponding paper in the link below
 The database is in the link below
 
 The codes of 4 cases included here:
-pinball_DNS                     2D DNS dataset of wake flow
+Pinball_DNS                     2D DNS dataset of wake flow
 Channel_DNS                     3D DNS dataset of wall bounded flow
-airfoil_wake_PIV                2D PIV dataset of wake flow
+Airfoil_wake_PIV                2D PIV dataset of wake flow
 
 Acknowledgements
 This project has received funding from the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 949085).
