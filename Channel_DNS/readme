@@ -49,49 +49,45 @@ in volumn_edge_new/ there are:
     Probes_linear/                              folder of probe data (multiple probes placed along a line in the downstream) for training
     Probes_linear_testing/                      folder of probe data (multiple probes placed along a line in the downstream) for testing
     in each folder of {Fields, Fields_testing} there are:
+        Field_??????.mat                        saving flow field data
     in each folder of {Probes_linear, Probes_linear_testing} there are:
-
-in each folder of {GWN, CGWN} there is:
-    Pressure.mat                                saving pressure computation result
-    V_NOISE.mat                                 saving velocity field superimposed with noise
-    V_SG.mat                                    saving velocity field after Savitzky-Golay filter
-    V_POD.mat                                   saving velocity field after POD truncation
-    V_AE.mat                                    saving velocity field after blind denoise autoencoder
-    V_AMIC.mat                                  saving velocity field after AMIC
+        Probe_??????.mat                        saving probe data
+in sensor_positioning/ there are:
+    geo_volumn.mat                              saving geometric data
+    ProbeTraversing*.mat                        saving result
 
 STRUCTURE OF DATA FILES
-of field data in Fields_testing/ and Fields/:
-    Xst, Yst, Zst: scalar      ; the location of the field of view
-    t            : scalar      ; time of frame
-    xb, yb       : 1x88        ; baseline in x/y direction
-    zb           : 1x44        ; baseline in z   direction
-    u, v, w, p   : 88x88x44    ; velocity field components in x/y/z direction and pressure field (dimension sequence is XYZ)
-of Pressure.mat:
-    P_pod        : 92928x100  ; pressure field from POD truncation
-    P_sg         : 92928x100  ; pressure field from Savitzky-Golay filter
-    P_ref        : 92928x100  ; reference pressure field
-    P_noise      : 92928x100  ; pressure field from noisy field
-    P_amic       : 92928x100  ; pressure field from AMIC
-of V_NOISE.mat:
-    Enabled      : 92928x501  ; enabled velocity vectors
-    PhiU         : 278784x2400; POD spatial modes
-    SigmaU       : 2400x2400  ; POD singular value matrix
-    U_array      : 92928x501  ; velcity field in X-direction (Enabled part)
-    V_array      : 92928x501  ; velcity field in Y-direction (Enabled part)
-    W_array      : 92928x501  ; velcity field in Z-direction (Enabled part)
-    U_noise      : 92928x501  ; velcity field in X-direction (noisy)
-    V_noise      : 92928x501  ; velcity field in Y-direction (noisy)
-    W_noise      : 92928x501  ; velcity field in Z-direction (noisy)
-    U_ext        : 92928x1899 ; velcity field in X-direction (for POD)
-    V_ext        : 92928x1899 ; velcity field in Y-direction (for POD)
-    W_ext        : 92928x1899 ; velcity field in Z-direction (for POD)
-    Um           : 92928x1    ; mean velcity field in X-direction
-    Vm           : 92928x1    ; mean velcity field in Y-direction
-    Wm           : 92928x1    ; mean velcity field in Z-direction
-of V_SG.mat/V_POD.mat/V_AE.mat/V_AMIC.mat:
-    U, V, W      : 92928x120  ; processed velcity field in X/Y/Z-direction
-    xb, yb       : 1x88       ; baseline in x/y direction
-    zb           : 1x44       ; baseline in z   direction
+of Field_??????.mat:
+    Xst, Yst, Zst: scalar;       starting position of the sub-domain
+    u, v, w, p:    88x88x44;     X/Y/Z component of the velocity field and pressure field
+    t:             scalar;       starting time of the sub-domain
+    xb, yb:        1x88;         base grid for the sub-domain in X/Y-direction
+    zb:            1x44;         base grid for the sub-domain in Z-direction
+
+of Probe_??????.mat:
+    EpisodeLength: scalar;       the length of time-embedded sensor signal
+    EpisodeRetro:  scalar;       the length of time-embedded sensor signal before the snapshot
+    UP, VP, WP:    200x88;       probe data, recording velocity (dim 1 for EpisodeLength, dim 2 for the geometry of the field)
+    Xst, Yst, Zst: scalar;       starting position of the sub-domain
+    dt:            scalar;       time interval of probe signal
+    t:             scalar;       starting time of the sub-domain
+    x_grid, y_grid, z_grid
+                   scalar;       grid of starting position of the sub-domain
+of geo_volumn.mat:
+    xb, yb:        1x88;         base grid for the sub-domain in X/Y-direction
+    zb:            1x44;         base grid for the sub-domain in Z-direction
+    y_pr:          1x88;         base grid for probe position
+of ProbeTraversing*.mat:
+    AR:            3x4060;       array of probe position (dim 1 for number of probes, dim 2 for number of combinations)
+    Acorr:         88x88;        matrix of correlation value
+    CorrTh:        scalar;       threshold for correlation value
+    Aerr_*:        1x4060;       velocity reconstruction error (dim 2 for the number of combinations)
+    Derr_*:        scalar;       velocity reconstruction error for equidistant sensors
+    Perr_*:        scalar;       velocity reconstruction error for block-pivoted QR sensors
+    Row_list:      1x30;         saving sensor position for AR
+    RowEqi:        1x3;          saving sensor position for equidistant sensors
+    RowQR:         1x3;          saving sensor position for for block-pivoted QR sensors
+    FieldStd:      scalar;       standard value of the velocity field
 
 ACKNOWLEDGEMENT
 We acknowledge John Hopkins Turbulent Database, and wish the user of data on Zenodo cite their articles.
