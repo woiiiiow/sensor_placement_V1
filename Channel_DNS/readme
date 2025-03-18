@@ -1,1 +1,97 @@
+===========================================================================
+        Algorithm: Sensor Positioning
+           Author: CHEN Junwei, Stefano DISCETTI, Marco RAIOLA
+       Laboratory: EAP of UC3M
+  Project website: https://erc-nextflow.uc3m.es
+   Project github: https://github.com/erc-nextflow
+         Platform: MATLAB
+             Date: 18th March 2025
+          Version: 1.0.0
+     Repositories: https://github.com/woiiiiow/sensor_positioning_V1
+          Contact: junwei.chen@uc3m.es
+===========================================================================
 
+DESCRIPTION
+This is the code used in sensor positioning for data-driven flow visualization combining PIV and probes (using time-embedded probes in the downstream). Here is an example on 3D synthetic dataset of channel flow at $Re_\tau = 1000$ from JHTDB (John Hopkins Turbulence Database).
+
+PLATFORM
+The codes are tested on:
+AMD ThreadRipper 3990X/256 GB DDR4
+Ubuntu 20.04.6 LTS/5.15.0-131-generic/MATLAB R2022a
+around 1 hour for 2D case
+
+SITE OF CODES
+https://github.com/woiiiiow/sensor_positioning_V1
+
+DATABASE
+
+the original database is 
+https://turbulence.idies.jhu.edu/home
+
+RUNNING
+1. downloading data from zenodo, which is on Channel_DNS.
+2. downloading the codes here and move to Channel_DNS/sensor_positioning/
+3. converting .h5 file to .mat file using h52mat.m
+4. run traversing_volumn.m on MATLAB for 3D case and traversing_volumn_p2D.m for pseudo 2D case.
+
+FILES IN GITHUB
+traversing_volumn.m                             MATLAB script for sensor positioning (3D case)
+traversing_volumn_p2D.m                         MATLAB script for sensor positioning (pseudo 2D case)
+checkresult.m                                   MATLAB script for checking result
+
+FILES IN ZENODO
+mat2h5.m                                        MATLAB script to convert the format from *.mat to *.h5
+h52mat.m                                        MATLAB script to convert the format from *.h5 to *.mat
+volumn_edge_new/                                folder to save the data
+in volumn_edge_new/ there are:
+    Fields/                                     folder of field data for training
+    Fields_testing/                             folder of field data for testing
+    Probes_linear/                              folder of probe data (multiple probes placed along a line in the downstream) for training
+    Probes_linear_testing/                      folder of probe data (multiple probes placed along a line in the downstream) for testing
+    in each folder of {Fields, Fields_testing} there are:
+    in each folder of {Probes_linear, Probes_linear_testing} there are:
+
+in each folder of {GWN, CGWN} there is:
+    Pressure.mat                                saving pressure computation result
+    V_NOISE.mat                                 saving velocity field superimposed with noise
+    V_SG.mat                                    saving velocity field after Savitzky-Golay filter
+    V_POD.mat                                   saving velocity field after POD truncation
+    V_AE.mat                                    saving velocity field after blind denoise autoencoder
+    V_AMIC.mat                                  saving velocity field after AMIC
+
+STRUCTURE OF DATA FILES
+of field data in Fields_testing/ and Fields/:
+    Xst, Yst, Zst: scalar      ; the location of the field of view
+    t            : scalar      ; time of frame
+    xb, yb       : 1x88        ; baseline in x/y direction
+    zb           : 1x44        ; baseline in z   direction
+    u, v, w, p   : 88x88x44    ; velocity field components in x/y/z direction and pressure field (dimension sequence is XYZ)
+of Pressure.mat:
+    P_pod        : 92928x100  ; pressure field from POD truncation
+    P_sg         : 92928x100  ; pressure field from Savitzky-Golay filter
+    P_ref        : 92928x100  ; reference pressure field
+    P_noise      : 92928x100  ; pressure field from noisy field
+    P_amic       : 92928x100  ; pressure field from AMIC
+of V_NOISE.mat:
+    Enabled      : 92928x501  ; enabled velocity vectors
+    PhiU         : 278784x2400; POD spatial modes
+    SigmaU       : 2400x2400  ; POD singular value matrix
+    U_array      : 92928x501  ; velcity field in X-direction (Enabled part)
+    V_array      : 92928x501  ; velcity field in Y-direction (Enabled part)
+    W_array      : 92928x501  ; velcity field in Z-direction (Enabled part)
+    U_noise      : 92928x501  ; velcity field in X-direction (noisy)
+    V_noise      : 92928x501  ; velcity field in Y-direction (noisy)
+    W_noise      : 92928x501  ; velcity field in Z-direction (noisy)
+    U_ext        : 92928x1899 ; velcity field in X-direction (for POD)
+    V_ext        : 92928x1899 ; velcity field in Y-direction (for POD)
+    W_ext        : 92928x1899 ; velcity field in Z-direction (for POD)
+    Um           : 92928x1    ; mean velcity field in X-direction
+    Vm           : 92928x1    ; mean velcity field in Y-direction
+    Wm           : 92928x1    ; mean velcity field in Z-direction
+of V_SG.mat/V_POD.mat/V_AE.mat/V_AMIC.mat:
+    U, V, W      : 92928x120  ; processed velcity field in X/Y/Z-direction
+    xb, yb       : 1x88       ; baseline in x/y direction
+    zb           : 1x44       ; baseline in z   direction
+
+ACKNOWLEDGEMENT
+We acknowledge John Hopkins Turbulent Database, and wish the user of data on Zenodo cite their articles.
