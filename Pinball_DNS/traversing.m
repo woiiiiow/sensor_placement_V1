@@ -2,9 +2,9 @@
 % Woii junwei.chen@uc3m.es 221202
 
 %% settings
-Train_path = '../DataInterp100k/TrainData.mat';
-Test_path = '../DataInterp100k/TestData.mat';
-Probe_path = '../sensingII/ProbeHistory_everyrow.mat';
+Train_path = 'TrainData.mat';
+Test_path  = 'TestData.mat';
+Probe_path = 'ProbeHistory_everyrow.mat';
 
 S_train = -1;           % snapshots for train, -1 means all
 S_test = -1;            % snapshots for test, -1 means all
