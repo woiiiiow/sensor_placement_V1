@@ -24,7 +24,7 @@ Zst = 0.05:0.3:3*pi-0.6;
 YstArray = 0;
 NSample = numel(XstArray)*length(T);
 
-for iSample = 9601:10000
+for iSample = 1:10000
     tic
     fprintf('%d of %d samples\n',iSample,NSample);
     Xst = XstArray(mod(iSample-1,numel(XstArray))+1);
