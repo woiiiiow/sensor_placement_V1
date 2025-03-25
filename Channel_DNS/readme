@@ -29,7 +29,8 @@ the original database is
 https://turbulence.idies.jhu.edu/home
 
 RUNNING
-1. downloading data from zenodo, which is on Channel_DNS.
+1a. downloading data from zenodo, which is on Channel_DNS.
+1b. if the dataset is not available on zenodo, use the code volumn_edge_new/ to download the data directly from the database, before running the script, downlaod the matlab tool at: https://turbulence.pha.jhu.edu/help/matlab/ and include it in the path.
 2. downloading the codes here and move to Channel_DNS/sensor_positioning/
 3. converting .h5 file to .mat file using h52mat.m
 4. run traversing_volumn.m on MATLAB for 3D case and traversing_volumn_p2D.m for pseudo 2D case.
@@ -38,6 +39,13 @@ FILES IN GITHUB
 traversing_volumn.m                             MATLAB script for sensor positioning (3D case)
 traversing_volumn_p2D.m                         MATLAB script for sensor positioning (pseudo 2D case)
 checkresult.m                                   MATLAB script for checking result
+volumn_edge_new/                                folder of the code to download the database
+in volumn_edge_new/ there are:
+    HeadOfDownload.m                            MATLAB script saving the setting of download
+    download_field.m                            MATLAB script to download the field data for training
+    download_field_testing.m                    MATLAB script to download the field data for testing
+    download_probe.m                            MATLAB script to download the probe data for training
+    download_probe_testing.m                    MATLAB script to download the probe data for testing
 
 FILES IN ZENODO
 mat2h5.m                                        MATLAB script to convert the format from *.mat to *.h5
