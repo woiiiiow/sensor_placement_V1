@@ -23,7 +23,7 @@ y_grid = 0:dx:1;
 z_grid = 0.2394;
 [X_pr,Y_pr,Z_pr]=meshgrid(x_grid,y_grid,z_grid);
 
-for iErgo = 9601:10000
+for iErgo = 1:10000
     tic
     load([Af(iErgo).folder,'/',Af(iErgo).name], 't','Xst','Yst','Zst');
     fprintf('%d of %d samples\n',iErgo,length(Af));
